@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Calculator Pro - All-in-One Calculator</title>
-    <meta name="description" content="Free online calculators for finance, math, health, and more.">
-    <meta name="keywords" content="calculator, loan calculator, mortgage calculator, percentage calculator, financial calculator">
+    <title>Ultimate Calculator Pro - All-in-One Global Calculator</title>
+    <meta name="description" content="Free online calculators for finance, math, health, unit conversion, and more. Tools for every country worldwide.">
+    <meta name="keywords" content="calculator, loan calculator, mortgage calculator, unit converter, BMI calculator, currency converter, scientific calculator">
     <meta name="author" content="Ultimate Calculator Pro">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 
     <!-- Google adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2718006535474843"
     crossorigin="anonymous"></script>
-
 
     <style>
         :root {
@@ -55,6 +53,7 @@
             color: var(--dark);
             min-height: 100vh;
             transition: all 0.3s ease;
+            overflow-x: hidden;
         }
 
         .dark-mode body {
@@ -128,6 +127,7 @@
             gap: 10px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .tab {
@@ -139,6 +139,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            white-space: nowrap;
         }
 
         .dark-mode .tab {
@@ -232,7 +233,7 @@
             font-size: 0.95rem;
         }
 
-        .input-field {
+        .input-field, .input-select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
@@ -243,12 +244,12 @@
             color: var(--dark);
         }
 
-        .dark-mode .input-field {
+        .dark-mode .input-field, .dark-mode .input-select {
             border: 2px solid #333;
             color: var(--dark);
         }
 
-        .input-field:focus {
+        .input-field:focus, .input-select:focus {
             outline: none;
             border-color: var(--primary);
         }
@@ -315,6 +316,34 @@
             color: var(--dark);
         }
 
+        .scientific-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .scientific-btn {
+            padding: 10px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .dark-mode .scientific-btn {
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            color: var(--dark);
+        }
+
+        .scientific-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .calculator-grid {
                 grid-template-columns: 1fr;
@@ -327,6 +356,11 @@
             .calculator-tabs {
                 overflow-x: auto;
                 padding-bottom: 10px;
+                justify-content: flex-start;
+            }
+            
+            .scientific-buttons {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -351,16 +385,6 @@
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
                 <i class="fas fa-moon"></i>
             </button>
-            <!-- Ad Unit 1: Header -->
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-2718006535474843"
-                data-ad-slot="1234567890"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
         </header>
 
         <div class="calculator-tabs">
@@ -370,7 +394,7 @@
             <div class="tab" data-tab="conversion">Unit Conversion</div>
             <div class="tab" data-tab="health">Health & Fitness</div>
             <div class="tab" data-tab="date">Date & Time</div>
-            <div class="tab" data-tab="other">Other Tools</div>
+            <div class="tab" data-tab="other">Global Tools</div>
         </div>
 
         <!-- Basic Math Tab -->
@@ -434,19 +458,6 @@
                     <div class="result-box" id="percentageResult"></div>
                 </div>
 
-                <!-- Ad Unit 2: Between Calculators -->
-                <div class="ad-space">
-                    <ins class="adsbygoogle"
-                        style="display:block"
-                        data-ad-client="ca-pub-2718006535474843"
-                        data-ad-slot="1234567890"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-
                 <!-- Fraction Calculator -->
                 <div class="calculator-card">
                     <div class="calculator-header">
@@ -475,6 +486,84 @@
                     </div>
                     <button class="btn" onclick="calculateFraction()" style="margin-top: 15px;">Calculate</button>
                     <div class="result-box" id="fractionResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scientific Tab -->
+        <div class="tab-content" id="scientific-tab">
+            <div class="calculator-grid">
+                <!-- Scientific Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-square-root-alt"></i>
+                        </div>
+                        <div class="calculator-title">Scientific Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="sciDisplay" class="input-field" readonly placeholder="0">
+                    </div>
+                    <div class="scientific-buttons">
+                        <button class="scientific-btn" onclick="sciFunction('sin(')">sin</button>
+                        <button class="scientific-btn" onclick="sciFunction('cos(')">cos</button>
+                        <button class="scientific-btn" onclick="sciFunction('tan(')">tan</button>
+                        <button class="scientific-btn" onclick="sciFunction('log(')">log</button>
+                        <button class="scientific-btn" onclick="sciFunction('ln(')">ln</button>
+                        
+                        <button class="scientific-btn" onclick="sciFunction('π')">π</button>
+                        <button class="scientific-btn" onclick="sciFunction('e')">e</button>
+                        <button class="scientific-btn" onclick="sciFunction('^')">^</button>
+                        <button class="scientific-btn" onclick="sciFunction('√(')">√</button>
+                        <button class="scientific-btn" onclick="sciFunction('(')">(</button>
+                        
+                        <button class="scientific-btn" onclick="sciFunction(')')">)</button>
+                        <button class="scientific-btn" onclick="sciFunction('!')">!</button>
+                        <button class="scientific-btn" onclick="sciFunction('1/x')">1/x</button>
+                        <button class="scientific-btn" onclick="sciClear()">C</button>
+                        <button class="scientific-btn" onclick="sciDelete()">⌫</button>
+                    </div>
+                    <button class="btn" onclick="sciCalculate()" style="margin-top: 15px;">Calculate</button>
+                </div>
+
+                <!-- Quadratic Equation Solver -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-function"></i>
+                        </div>
+                        <div class="calculator-title">Quadratic Equation Solver</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">a (x² coefficient)</label>
+                        <input type="number" id="quadA" class="input-field" placeholder="Enter a" step="any">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">b (x coefficient)</label>
+                        <input type="number" id="quadB" class="input-field" placeholder="Enter b" step="any">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">c (constant)</label>
+                        <input type="number" id="quadC" class="input-field" placeholder="Enter c" step="any">
+                    </div>
+                    <button class="btn" onclick="solveQuadratic()">Solve</button>
+                    <div class="result-box" id="quadraticResult"></div>
+                </div>
+
+                <!-- Statistics Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="calculator-title">Statistics Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Enter numbers (comma separated)</label>
+                        <input type="text" id="statsData" class="input-field" placeholder="e.g., 5, 10, 15, 20">
+                    </div>
+                    <button class="btn" onclick="calculateStats()">Calculate</button>
+                    <div class="result-box" id="statsResult"></div>
                 </div>
             </div>
         </div>
@@ -570,26 +659,345 @@
             </div>
         </div>
 
+        <!-- Unit Conversion Tab -->
+        <div class="tab-content" id="conversion-tab">
+            <div class="calculator-grid">
+                <!-- Length Converter -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-ruler"></i>
+                        </div>
+                        <div class="calculator-title">Length Converter</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Value</label>
+                        <input type="number" id="lengthValue" class="input-field" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">From</label>
+                        <select id="lengthFrom" class="input-field">
+                            <option value="meter">Meter (m)</option>
+                            <option value="kilometer">Kilometer (km)</option>
+                            <option value="centimeter">Centimeter (cm)</option>
+                            <option value="millimeter">Millimeter (mm)</option>
+                            <option value="mile">Mile (mi)</option>
+                            <option value="yard">Yard (yd)</option>
+                            <option value="foot">Foot (ft)</option>
+                            <option value="inch">Inch (in)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">To</label>
+                        <select id="lengthTo" class="input-field">
+                            <option value="kilometer">Kilometer (km)</option>
+                            <option value="meter">Meter (m)</option>
+                            <option value="centimeter">Centimeter (cm)</option>
+                            <option value="millimeter">Millimeter (mm)</option>
+                            <option value="mile">Mile (mi)</option>
+                            <option value="yard">Yard (yd)</option>
+                            <option value="foot">Foot (ft)</option>
+                            <option value="inch">Inch (in)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="convertLength()">Convert</button>
+                    <div class="result-box" id="lengthResult"></div>
+                </div>
+
+                <!-- Weight Converter -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <div class="calculator-title">Weight Converter</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Value</label>
+                        <input type="number" id="weightValue" class="input-field" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">From</label>
+                        <select id="weightFrom" class="input-field">
+                            <option value="kilogram">Kilogram (kg)</option>
+                            <option value="gram">Gram (g)</option>
+                            <option value="milligram">Milligram (mg)</option>
+                            <option value="pound">Pound (lb)</option>
+                            <option value="ounce">Ounce (oz)</option>
+                            <option value="stone">Stone (st)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">To</label>
+                        <select id="weightTo" class="input-field">
+                            <option value="gram">Gram (g)</option>
+                            <option value="kilogram">Kilogram (kg)</option>
+                            <option value="milligram">Milligram (mg)</option>
+                            <option value="pound">Pound (lb)</option>
+                            <option value="ounce">Ounce (oz)</option>
+                            <option value="stone">Stone (st)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="convertWeight()">Convert</button>
+                    <div class="result-box" id="weightResult"></div>
+                </div>
+
+                <!-- Temperature Converter -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="calculator-title">Temperature Converter</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Value</label>
+                        <input type="number" id="tempValue" class="input-field" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">From</label>
+                        <select id="tempFrom" class="input-field">
+                            <option value="celsius">Celsius (°C)</option>
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">To</label>
+                        <select id="tempTo" class="input-field">
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="celsius">Celsius (°C)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="convertTemperature()">Convert</button>
+                    <div class="result-box" id="tempResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health & Fitness Tab -->
+        <div class="tab-content" id="health-tab">
+            <div class="calculator-grid">
+                <!-- BMI Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="calculator-title">BMI Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Weight (kg)</label>
+                        <input type="number" id="bmiWeight" class="input-field" placeholder="Enter weight in kg">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Height (cm)</label>
+                        <input type="number" id="bmiHeight" class="input-field" placeholder="Enter height in cm">
+                    </div>
+                    <button class="btn" onclick="calculateBMI()">Calculate</button>
+                    <div class="result-box" id="bmiResult"></div>
+                </div>
+
+                <!-- Calorie Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="calculator-title">Calorie Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Age</label>
+                        <input type="number" id="calorieAge" class="input-field" placeholder="Enter age">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Gender</label>
+                        <select id="calorieGender" class="input-field">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Weight (kg)</label>
+                        <input type="number" id="calorieWeight" class="input-field" placeholder="Enter weight">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Height (cm)</label>
+                        <input type="number" id="calorieHeight" class="input-field" placeholder="Enter height">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Activity Level</label>
+                        <select id="calorieActivity" class="input-field">
+                            <option value="1.2">Sedentary (little or no exercise)</option>
+                            <option value="1.375">Lightly active (light exercise 1-3 days/week)</option>
+                            <option value="1.55">Moderately active (moderate exercise 3-5 days/week)</option>
+                            <option value="1.725">Very active (hard exercise 6-7 days/week)</option>
+                            <option value="1.9">Extra active (very hard exercise & physical job)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="calculateCalories()">Calculate</button>
+                    <div class="result-box" id="calorieResult"></div>
+                </div>
+
+                <!-- Water Intake Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="calculator-title">Water Intake Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Weight (kg)</label>
+                        <input type="number" id="waterWeight" class="input-field" placeholder="Enter weight in kg">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Activity Level</label>
+                        <select id="waterActivity" class="input-field">
+                            <option value="30">Sedentary (little exercise)</option>
+                            <option value="35">Moderately active</option>
+                            <option value="40">Active (regular exercise)</option>
+                            <option value="45">Very active (intense exercise)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="calculateWater()">Calculate</button>
+                    <div class="result-box" id="waterResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Tools Tab -->
+        <div class="tab-content" id="other-tab">
+            <div class="calculator-grid">
+                <!-- Currency Converter -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="calculator-title">Currency Converter</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Amount</label>
+                        <input type="number" id="currencyAmount" class="input-field" placeholder="Enter amount">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">From Currency</label>
+                        <select id="currencyFrom" class="input-field">
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="CHF">CHF - Swiss Franc</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">To Currency</label>
+                        <select id="currencyTo" class="input-field">
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="CHF">CHF - Swiss Franc</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="convertCurrency()">Convert</button>
+                    <div class="result-box" id="currencyResult"></div>
+                </div>
+
+                <!-- Time Zone Converter -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <div class="calculator-title">Time Zone Converter</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Date & Time</label>
+                        <input type="datetime-local" id="timeInput" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">From Time Zone</label>
+                        <select id="timeFrom" class="input-field">
+                            <option value="UTC">UTC</option>
+                            <option value="EST">EST - Eastern Standard Time</option>
+                            <option value="PST">PST - Pacific Standard Time</option>
+                            <option value="CST">CST - Central Standard Time</option>
+                            <option value="GMT">GMT - Greenwich Mean Time</option>
+                            <option value="CET">CET - Central European Time</option>
+                            <option value="IST">IST - Indian Standard Time</option>
+                            <option value="JST">JST - Japan Standard Time</option>
+                            <option value="AEST">AEST - Australian Eastern Time</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">To Time Zone</label>
+                        <select id="timeTo" class="input-field">
+                            <option value="EST">EST - Eastern Standard Time</option>
+                            <option value="UTC">UTC</option>
+                            <option value="PST">PST - Pacific Standard Time</option>
+                            <option value="CST">CST - Central Standard Time</option>
+                            <option value="GMT">GMT - Greenwich Mean Time</option>
+                            <option value="CET">CET - Central European Time</option>
+                            <option value="IST">IST - Indian Standard Time</option>
+                            <option value="JST">JST - Japan Standard Time</option>
+                            <option value="AEST">AEST - Australian Eastern Time</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="convertTimeZone()">Convert</button>
+                    <div class="result-box" id="timezoneResult"></div>
+                </div>
+
+                <!-- Tip Calculator -->
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <div class="calculator-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="calculator-title">Tip Calculator</div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Bill Amount ($)</label>
+                        <input type="number" id="tipBill" class="input-field" placeholder="Enter bill amount">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Tip Percentage (%)</label>
+                        <input type="number" id="tipPercent" class="input-field" placeholder="Enter tip percentage" value="15">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Number of People</label>
+                        <input type="number" id="tipPeople" class="input-field" placeholder="Number of people" value="1">
+                    </div>
+                    <button class="btn" onclick="calculateTip()">Calculate</button>
+                    <div class="result-box" id="tipResult"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Ad Space -->
         <div class="ad-space">
             <div class="ad-label">Advertisement</div>
-            <p>Upgrade to Premium for advanced features and ad-free experience!</p>
-            <button class="btn" style="width: auto; margin-top: 15px;">Get Premium - $4.99/month</button>
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-2718006535474843"
+                data-ad-slot="1234567890"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
-
-    </div>
-
-    <!-- Ad Unit 3: Footer -->
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-2718006535474843"
-        data-ad-slot="1234567890"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <div class="footer">
         &copy; 2023 Ultimate Calculator Pro. All daily problems, one solution.
@@ -792,6 +1200,440 @@
             resultElement.innerHTML = `Total Amount: $${amount.toFixed(2)}<br>
                                       Interest Earned: $${interest.toFixed(2)}`;
             resultElement.style.display = 'block';
+        }
+
+        // Scientific Calculator Functions
+        let sciDisplay = document.getElementById('sciDisplay');
+        
+        function sciFunction(value) {
+            if (sciDisplay.value === '0' && value !== '.') {
+                sciDisplay.value = value;
+            } else {
+                sciDisplay.value += value;
+            }
+        }
+        
+        function sciClear() {
+            sciDisplay.value = '0';
+        }
+        
+        function sciDelete() {
+            sciDisplay.value = sciDisplay.value.slice(0, -1);
+            if (sciDisplay.value === '') sciDisplay.value = '0';
+        }
+        
+        function sciCalculate() {
+            try {
+                // Replace mathematical functions and constants
+                let expression = sciDisplay.value
+                    .replace(/sin\(/g, 'Math.sin(')
+                    .replace(/cos\(/g, 'Math.cos(')
+                    .replace(/tan\(/g, 'Math.tan(')
+                    .replace(/log\(/g, 'Math.log10(')
+                    .replace(/ln\(/g, 'Math.log(')
+                    .replace(/π/g, 'Math.PI')
+                    .replace(/e/g, 'Math.E')
+                    .replace(/√\(/g, 'Math.sqrt(')
+                    .replace(/\^/g, '**');
+                
+                // Handle factorial
+                if (expression.includes('!')) {
+                    const num = parseFloat(expression.split('!')[0]);
+                    if (num >= 0 && num <= 170) {
+                        let fact = 1;
+                        for (let i = 2; i <= num; i++) {
+                            fact *= i;
+                        }
+                        sciDisplay.value = fact;
+                        return;
+                    } else {
+                        sciDisplay.value = 'Error';
+                        return;
+                    }
+                }
+                
+                // Handle reciprocal
+                if (expression.includes('1/x')) {
+                    const num = parseFloat(expression.split('1/x')[0]);
+                    if (num !== 0) {
+                        sciDisplay.value = 1 / num;
+                        return;
+                    } else {
+                        sciDisplay.value = 'Error';
+                        return;
+                    }
+                }
+                
+                sciDisplay.value = eval(expression);
+            } catch (error) {
+                sciDisplay.value = 'Error';
+            }
+        }
+
+        // Quadratic Equation Solver
+        function solveQuadratic() {
+            const a = parseFloat(document.getElementById('quadA').value);
+            const b = parseFloat(document.getElementById('quadB').value);
+            const c = parseFloat(document.getElementById('quadC').value);
+            
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                alert("Please enter valid numbers");
+                return;
+            }
+            
+            if (a === 0) {
+                document.getElementById('quadraticResult').innerHTML = "Error: 'a' cannot be zero";
+                document.getElementById('quadraticResult').style.display = 'block';
+                return;
+            }
+            
+            const discriminant = b * b - 4 * a * c;
+            let result;
+            
+            if (discriminant > 0) {
+                const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                result = `Roots are real and different.<br>Root 1 = ${root1.toFixed(4)}<br>Root 2 = ${root2.toFixed(4)}`;
+            } else if (discriminant === 0) {
+                const root = -b / (2 * a);
+                result = `Roots are real and same.<br>Root = ${root.toFixed(4)}`;
+            } else {
+                const realPart = (-b / (2 * a)).toFixed(4);
+                const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
+                result = `Roots are complex.<br>Root 1 = ${realPart} + ${imaginaryPart}i<br>Root 2 = ${realPart} - ${imaginaryPart}i`;
+            }
+            
+            document.getElementById('quadraticResult').innerHTML = result;
+            document.getElementById('quadraticResult').style.display = 'block';
+        }
+
+        // Statistics Calculator
+        function calculateStats() {
+            const dataString = document.getElementById('statsData').value;
+            if (!dataString) {
+                alert("Please enter some numbers");
+                return;
+            }
+            
+            const data = dataString.split(',').map(Number).filter(n => !isNaN(n));
+            
+            if (data.length === 0) {
+                alert("Please enter valid numbers");
+                return;
+            }
+            
+            // Mean
+            const mean = data.reduce((a, b) => a + b) / data.length;
+            
+            // Median
+            const sorted = [...data].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+            
+            // Mode
+            const frequency = {};
+            let maxFreq = 0;
+            let modes = [];
+            
+            data.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+                if (frequency[num] > maxFreq) {
+                    maxFreq = frequency[num];
+                    modes = [num];
+                } else if (frequency[num] === maxFreq) {
+                    modes.push(num);
+                }
+            });
+            
+            const mode = modes.length === data.length ? "No mode" : modes.join(', ');
+            
+            // Standard Deviation
+            const squareDiffs = data.map(value => {
+                const diff = value - mean;
+                return diff * diff;
+            });
+            const avgSquareDiff = squareDiffs.reduce((a, b) => a + b) / data.length;
+            const stdDev = Math.sqrt(avgSquareDiff);
+            
+            const result = `Mean: ${mean.toFixed(2)}<br>
+                           Median: ${median.toFixed(2)}<br>
+                           Mode: ${mode}<br>
+                           Standard Deviation: ${stdDev.toFixed(2)}`;
+            
+            document.getElementById('statsResult').innerHTML = result;
+            document.getElementById('statsResult').style.display = 'block';
+        }
+
+        // Unit Conversion Functions
+        function convertLength() {
+            const value = parseFloat(document.getElementById('lengthValue').value);
+            const from = document.getElementById('lengthFrom').value;
+            const to = document.getElementById('lengthTo').value;
+            
+            if (isNaN(value)) {
+                alert("Please enter a valid number");
+                return;
+            }
+            
+            // Convert to meters first
+            let meters;
+            switch(from) {
+                case 'meter': meters = value; break;
+                case 'kilometer': meters = value * 1000; break;
+                case 'centimeter': meters = value / 100; break;
+                case 'millimeter': meters = value / 1000; break;
+                case 'mile': meters = value * 1609.34; break;
+                case 'yard': meters = value * 0.9144; break;
+                case 'foot': meters = value * 0.3048; break;
+                case 'inch': meters = value * 0.0254; break;
+            }
+            
+            // Convert from meters to target unit
+            let result;
+            switch(to) {
+                case 'meter': result = meters; break;
+                case 'kilometer': result = meters / 1000; break;
+                case 'centimeter': result = meters * 100; break;
+                case 'millimeter': result = meters * 1000; break;
+                case 'mile': result = meters / 1609.34; break;
+                case 'yard': result = meters / 0.9144; break;
+                case 'foot': result = meters / 0.3048; break;
+                case 'inch': result = meters / 0.0254; break;
+            }
+            
+            document.getElementById('lengthResult').innerHTML = `${value} ${from} = ${result.toFixed(6)} ${to}`;
+            document.getElementById('lengthResult').style.display = 'block';
+        }
+
+        function convertWeight() {
+            const value = parseFloat(document.getElementById('weightValue').value);
+            const from = document.getElementById('weightFrom').value;
+            const to = document.getElementById('weightTo').value;
+            
+            if (isNaN(value)) {
+                alert("Please enter a valid number");
+                return;
+            }
+            
+            // Convert to kilograms first
+            let kilograms;
+            switch(from) {
+                case 'kilogram': kilograms = value; break;
+                case 'gram': kilograms = value / 1000; break;
+                case 'milligram': kilograms = value / 1000000; break;
+                case 'pound': kilograms = value * 0.453592; break;
+                case 'ounce': kilograms = value * 0.0283495; break;
+                case 'stone': kilograms = value * 6.35029; break;
+            }
+            
+            // Convert from kilograms to target unit
+            let result;
+            switch(to) {
+                case 'kilogram': result = kilograms; break;
+                case 'gram': result = kilograms * 1000; break;
+                case 'milligram': result = kilograms * 1000000; break;
+                case 'pound': result = kilograms / 0.453592; break;
+                case 'ounce': result = kilograms / 0.0283495; break;
+                case 'stone': result = kilograms / 6.35029; break;
+            }
+            
+            document.getElementById('weightResult').innerHTML = `${value} ${from} = ${result.toFixed(6)} ${to}`;
+            document.getElementById('weightResult').style.display = 'block';
+        }
+
+        function convertTemperature() {
+            const value = parseFloat(document.getElementById('tempValue').value);
+            const from = document.getElementById('tempFrom').value;
+            const to = document.getElementById('tempTo').value;
+            
+            if (isNaN(value)) {
+                alert("Please enter a valid number");
+                return;
+            }
+            
+            // Convert to Celsius first
+            let celsius;
+            switch(from) {
+                case 'celsius': celsius = value; break;
+                case 'fahrenheit': celsius = (value - 32) * 5/9; break;
+                case 'kelvin': celsius = value - 273.15; break;
+            }
+            
+            // Convert from Celsius to target unit
+            let result;
+            switch(to) {
+                case 'celsius': result = celsius; break;
+                case 'fahrenheit': result = (celsius * 9/5) + 32; break;
+                case 'kelvin': result = celsius + 273.15; break;
+            }
+            
+            document.getElementById('tempResult').innerHTML = `${value} °${from.charAt(0).toUpperCase()} = ${result.toFixed(2)} °${to.charAt(0).toUpperCase()}`;
+            document.getElementById('tempResult').style.display = 'block';
+        }
+
+        // Health & Fitness Calculators
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('bmiWeight').value);
+            const height = parseFloat(document.getElementById('bmiHeight').value) / 100; // Convert cm to m
+            
+            if (isNaN(weight) || isNaN(height)) {
+                alert("Please enter valid numbers");
+                return;
+            }
+            
+            const bmi = weight / (height * height);
+            let category;
+            
+            if (bmi < 18.5) category = "Underweight";
+            else if (bmi < 25) category = "Normal weight";
+            else if (bmi < 30) category = "Overweight";
+            else category = "Obese";
+            
+            document.getElementById('bmiResult').innerHTML = `BMI: ${bmi.toFixed(1)}<br>Category: ${category}`;
+            document.getElementById('bmiResult').style.display = 'block';
+        }
+
+        function calculateCalories() {
+            const age = parseFloat(document.getElementById('calorieAge').value);
+            const gender = document.getElementById('calorieGender').value;
+            const weight = parseFloat(document.getElementById('calorieWeight').value);
+            const height = parseFloat(document.getElementById('calorieHeight').value);
+            const activity = parseFloat(document.getElementById('calorieActivity').value);
+            
+            if (isNaN(age) || isNaN(weight) || isNaN(height)) {
+                alert("Please enter valid numbers");
+                return;
+            }
+            
+            // BMR calculation using Mifflin-St Jeor Equation
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+            
+            const maintenance = bmr * activity;
+            const weightLoss = maintenance * 0.85; // 15% deficit
+            const weightGain = maintenance * 1.15; // 15% surplus
+            
+            document.getElementById('calorieResult').innerHTML = 
+                `Maintenance: ${maintenance.toFixed(0)} calories/day<br>
+                 Weight Loss: ${weightLoss.toFixed(0)} calories/day<br>
+                 Weight Gain: ${weightGain.toFixed(0)} calories/day`;
+            document.getElementById('calorieResult').style.display = 'block';
+        }
+
+        function calculateWater() {
+            const weight = parseFloat(document.getElementById('waterWeight').value);
+            const activity = parseFloat(document.getElementById('waterActivity').value);
+            
+            if (isNaN(weight)) {
+                alert("Please enter a valid weight");
+                return;
+            }
+            
+            const water = (weight * activity) / 1000; // Convert to liters
+            
+            document.getElementById('waterResult').innerHTML = 
+                `Recommended daily water intake: ${water.toFixed(2)} liters (${(water * 33.814).toFixed(0)} oz)`;
+            document.getElementById('waterResult').style.display = 'block';
+        }
+
+        // Global Tools
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('currencyAmount').value);
+            const from = document.getElementById('currencyFrom').value;
+            const to = document.getElementById('currencyTo').value;
+            
+            if (isNaN(amount)) {
+                alert("Please enter a valid amount");
+                return;
+            }
+            
+            // Static exchange rates (in a real app, you'd use an API)
+            const rates = {
+                USD: 1,
+                EUR: 0.85,
+                GBP: 0.73,
+                JPY: 110.0,
+                CAD: 1.25,
+                AUD: 1.35,
+                CHF: 0.92,
+                CNY: 6.45,
+                INR: 74.5
+            };
+            
+            const result = (amount * rates[to] / rates[from]).toFixed(2);
+            
+            document.getElementById('currencyResult').innerHTML = `${amount} ${from} = ${result} ${to}`;
+            document.getElementById('currencyResult').style.display = 'block';
+        }
+
+        function convertTimeZone() {
+            const dateTime = document.getElementById('timeInput').value;
+            const from = document.getElementById('timeFrom').value;
+            const to = document.getElementById('timeTo').value;
+            
+            if (!dateTime) {
+                alert("Please select a date and time");
+                return;
+            }
+            
+            // Time zone offsets in hours (simplified)
+            const offsets = {
+                UTC: 0,
+                EST: -5,
+                PST: -8,
+                CST: -6,
+                GMT: 0,
+                CET: 1,
+                IST: 5.5,
+                JST: 9,
+                AEST: 10
+            };
+            
+            const date = new Date(dateTime);
+            const fromOffset = offsets[from] * 60 * 60 * 1000; // Convert to milliseconds
+            const toOffset = offsets[to] * 60 * 60 * 1000;
+            
+            // Convert to UTC first, then to target timezone
+            const utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000);
+            const targetTime = new Date(utc + toOffset - fromOffset);
+            
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                timeZone: 'UTC'
+            };
+            
+            document.getElementById('timezoneResult').innerHTML = 
+                `Converted time: ${targetTime.toLocaleDateString('en-US', options)} ${to}`;
+            document.getElementById('timezoneResult').style.display = 'block';
+        }
+
+        function calculateTip() {
+            const bill = parseFloat(document.getElementById('tipBill').value);
+            const tipPercent = parseFloat(document.getElementById('tipPercent').value);
+            const people = parseFloat(document.getElementById('tipPeople').value);
+            
+            if (isNaN(bill) || isNaN(tipPercent) || isNaN(people)) {
+                alert("Please enter valid numbers");
+                return;
+            }
+            
+            const tipAmount = (bill * tipPercent) / 100;
+            const total = bill + tipAmount;
+            const perPerson = total / people;
+            
+            document.getElementById('tipResult').innerHTML = 
+                `Tip Amount: $${tipAmount.toFixed(2)}<br>
+                 Total Bill: $${total.toFixed(2)}<br>
+                 Per Person: $${perPerson.toFixed(2)}`;
+            document.getElementById('tipResult').style.display = 'block';
         }
     </script>
 </body>
